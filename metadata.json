@@ -1,0 +1,6 @@
+{
+  "name": "Smart Resource Allocation System",
+  "description": "An NGO system for urgent resource allocation featuring an offline dialer, AI-driven urgency scoring, and volunteer matching.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

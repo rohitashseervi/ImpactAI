@@ -1,11 +1,36 @@
-<div align="center">
+# ImpactAI: Smart Resource Allocation System
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+**Solving Scattered Community Needs with AI-Driven Intelligence**
 
-  <h1>Built with AI Studio</h2>
+ImpactAI is an offline-first, data-driven platform designed for NGOs and local social groups to transform scattered field reports into a real-time Command Center. It prioritizes critical human needs (Medical, Water, Food) and matches them with the nearest qualified volunteers.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 🚀 The "Smart Loop" Architecture
+Our solution follows a 5-step lifecycle optimized for rural and disaster-hit areas:
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+1.  **Check (Identity)**: Rapid 0.01s offline Aadhaar verification to prevent duplicate resource waste.
+2.  **Collect (Intake)**: Hybrid data entry via manual forms or **Smart OCR Scanning** of paper surveys.
+3.  **Share (P2P Sync)**: Simulated Bluetooth "whispering" allows volunteers to share "Done" lists without internet.
+4.  **Score (Intelligence)**: Google Gemini AI analyzes needs and assigns a **1-10 Urgency Score** based on weighted priorities.
+5.  **Solve (Allocation)**: Automated AI matching pairs critical tasks with the closest skilled volunteers.
 
-</div>
+## 🛠️ Tech Stack
+*   **Frontend**: React (Vite) + TypeScript
+*   **Design**: Bento Grid UI (Tailwind CSS + Framer Motion)
+*   **AI Engine**: Google Gemini API (Vision for OCR & NLP for Urgency Scoring)
+*   **Offline Engine**: Simulated LocalStorage-based NoSQL database for zero-latency field work.
+*   **Sync Logic**: Store-now-sync-later architecture with global deduplication.
+
+## 📦 Key Features
+*   **Offline Gatekeeper**: Phone-style dialer for rapid identity verification.
+*   **Smart Scanner**: AI-powered handwriting recognition for paper-to-digital transition.
+*   **Command Center**: Real-time dashboard with Urgency Heatmaps and Crisis Indexing.
+*   **Volunteer Matcher**: Proximity and skill-based task assignment.
+
+## 🔧 Setup Instructions
+1. Clone the repository.
+2. Run `npm install`.
+3. Create a `.env` file and add your `GEMINI_API_KEY`.
+4. Run `npm run dev` to start the local environment.
+
+---
+*Built for the Smart Resource Allocation Challenge.*

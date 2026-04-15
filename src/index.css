@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary: #1A73E8;
+  --color-primary-soft: #E8F0FE;
+  --color-success: #34A853;
+  --color-danger: #EA4335;
+  --color-warning: #FBBC04;
+  --color-ink: #202124;
+  --color-slate: #5F6368;
+  --color-bg: #F8F9FA;
+  --color-card-bg: #FFFFFF;
+  --color-border: #DADCE0;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-ink font-sans;
+  }
+}
+
+@layer components {
+  .bento-grid {
+    @apply grid grid-cols-4 grid-rows-4 gap-4 h-[calc(100vh-48px)];
+  }
+
+  .bento-card {
+    @apply bg-card-bg border border-border rounded-2xl p-5 flex flex-col overflow-hidden;
+  }
+
+  .bento-card-title {
+    @apply text-[11px] font-bold uppercase tracking-wider text-slate mb-3;
+  }
+
+  .bento-dialer {
+    @apply col-start-1 col-end-2 row-start-1 row-end-4;
+  }
+
+  .bento-tasks {
+    @apply col-start-2 col-end-4 row-start-1 row-end-4;
+  }
+
+  .bento-insights {
+    @apply col-start-4 col-end-5 row-start-1 row-end-3 bg-linear-to-br from-primary to-[#1557B0] text-white border-none;
+  }
+
+  .bento-map {
+    @apply col-start-2 col-end-5 row-start-4 row-end-5 bg-[radial-gradient(circle_at_10%_10%,#E8F0FE_2px,transparent_0)] bg-[length:20px_20px];
+  }
+
+  .bento-stats {
+    @apply col-start-1 col-end-2 row-start-4 row-end-5 flex flex-col items-center justify-center text-center;
+  }
+
+  .bento-volunteers {
+    @apply col-start-4 col-end-5 row-start-3 row-end-4;
+  }
+}
