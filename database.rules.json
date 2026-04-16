@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "notifications": {
+      "$userId": {
+        ".read": "$userId === auth.uid",
+        ".write": "auth != null"
+      }
+    }
+  }
+}
