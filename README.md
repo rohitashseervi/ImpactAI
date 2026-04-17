@@ -1,36 +1,91 @@
 # ImpactAI: Smart Resource Allocation System
 
-**Solving Scattered Community Needs with AI-Driven Intelligence**
+**Turning scattered NGO field data into a single, AI-prioritized Command Center.**
 
-ImpactAI is an offline-first, data-driven platform designed for NGOs and local social groups to transform scattered field reports into a real-time Command Center. It prioritizes critical human needs (Medical, Water, Food) and matches them with the nearest qualified volunteers.
+NGOs and social groups do critical ground work in underserved communities, but their data about needs (Medical, Water, Food, Shelter, Sanitation, Education) is scattered across paper surveys, WhatsApp messages, and spreadsheets. ImpactAI unifies this data, surfaces the most urgent problems with AI, and smart-matches volunteers to tasks based on skills, location, and availability.
 
-## 🚀 The "Smart Loop" Architecture
-Our solution follows a 5-step lifecycle optimized for rural and disaster-hit areas:
-
-1.  **Check (Identity)**: Rapid 0.01s offline Aadhaar verification to prevent duplicate resource waste.
-2.  **Collect (Intake)**: Hybrid data entry via manual forms or **Smart OCR Scanning** of paper surveys.
-3.  **Share (P2P Sync)**: Simulated Bluetooth "whispering" allows volunteers to share "Done" lists without internet.
-4.  **Score (Intelligence)**: Google Gemini AI analyzes needs and assigns a **1-10 Urgency Score** based on weighted priorities.
-5.  **Solve (Allocation)**: Automated AI matching pairs critical tasks with the closest skilled volunteers.
-
-## 🛠️ Tech Stack
-*   **Frontend**: React (Vite) + TypeScript
-*   **Design**: Bento Grid UI (Tailwind CSS + Framer Motion)
-*   **AI Engine**: Google Gemini API (Vision for OCR & NLP for Urgency Scoring)
-*   **Offline Engine**: Simulated LocalStorage-based NoSQL database for zero-latency field work.
-*   **Sync Logic**: Store-now-sync-later architecture with global deduplication.
-
-## 📦 Key Features
-*   **Offline Gatekeeper**: Phone-style dialer for rapid identity verification.
-*   **Smart Scanner**: AI-powered handwriting recognition for paper-to-digital transition.
-*   **Command Center**: Real-time dashboard with Urgency Heatmaps and Crisis Indexing.
-*   **Volunteer Matcher**: Proximity and skill-based task assignment.
-
-## 🔧 Setup Instructions
-1. Clone the repository.
-2. Run `npm install`.
-3. Create a `.env` file and add your `GEMINI_API_KEY`.
-4. Run `npm run dev` to start the local environment.
+**Live Demo:** https://smart-response-96dd5.web.app
+**Demo Admin:** `admin@gmail.com` / `123456` (pre-filled on the login page — just click Sign In)
 
 ---
-*Built for the Smart Resource Allocation Challenge.*
+
+## The Smart Loop
+
+1. **Collect** — NGOs submit field reports manually, or upload a photo of a paper survey and let Gemini OCR extract the data.
+2. **Aggregate** — Reports are deduplicated by community (name + pin code), so multiple NGOs working the same area build a shared picture.
+3. **Score** — Gemini assigns a 1–10 urgency score to each report using description, people affected, and community context.
+4. **Visualize** — Admin Command Center shows stats, an urgency bar chart, and an interactive Google Map of community hotspots.
+5. **Match** — Admin clicks "AI Match" on a task; Gemini picks the best volunteer from the real roster based on skills, location, and availability.
+6. **Notify** — Volunteer gets a real-time notification and tracks task status from assigned → in-progress → completed.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 19 + Vite 6 + TypeScript |
+| Styling | Tailwind CSS 4 + Framer Motion + Lucide Icons |
+| Auth | Firebase Authentication (role-based: NGO / Volunteer / Admin) |
+| Database | Firebase Firestore (core data) + Realtime Database (notifications) |
+| AI | Google Gemini (urgency scoring, OCR, volunteer matching, community insights) |
+| Maps | Google Maps JavaScript API |
+| Charts | Recharts |
+| Routing | React Router v7 (lazy-loaded, role-protected routes) |
+| Hosting | Firebase Hosting |
+
+---
+
+## Key Features
+
+- **NGO Portal** — Submit field reports manually or via Smart OCR paper-survey scanning.
+- **Admin Command Center** — Aggregated stats, urgency chart, Google Maps hotspot view, and AI-assisted volunteer matching.
+- **Volunteer Dashboard** — Assigned tasks, real-time notifications, status updates.
+- **Gemini OCR** — Upload a photo of a paper survey; Gemini Vision extracts community name, category, description, people affected.
+- **AI Urgency Scoring** — Each report gets a 1–10 urgency score with community context.
+- **AI Volunteer Matching** — Gemini ranks real volunteers for a task; falls back to skill-based heuristics if the AI service is unavailable.
+- **Dark / Light Mode** — Theme toggle persists in localStorage, available on both landing and dashboards.
+
+---
+
+## Setup
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/rohitashseervi/ImpactAI.git
+   cd ImpactAI/smart-response
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Create a `.env` file at the project root with:
+   ```
+   GEMINI_API_KEY=your_gemini_api_key
+   VITE_FIREBASE_API_KEY=...
+   VITE_FIREBASE_AUTH_DOMAIN=...
+   VITE_FIREBASE_PROJECT_ID=...
+   VITE_FIREBASE_STORAGE_BUCKET=...
+   VITE_FIREBASE_MESSAGING_SENDER_ID=...
+   VITE_FIREBASE_APP_ID=...
+   VITE_FIREBASE_REALTIME_DB_URL=...
+   VITE_GOOGLE_MAPS_API_KEY=...
+   ```
+4. Start the dev server:
+   ```
+   npm run dev
+   ```
+5. (First-time only) Visit `/setup` to create an admin account and seed demo data (7 communities, 15 reports, 3 NGOs, 10 volunteers).
+
+---
+
+## Deployment
+
+```
+npm run build
+firebase deploy --only hosting
+```
+
+---
+
+*Built for the Google Solution Hackathon — Smart Resource Allocation Challenge.*
