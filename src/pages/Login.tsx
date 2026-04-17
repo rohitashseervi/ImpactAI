@@ -5,8 +5,8 @@ import { Activity, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@gmail.com');
+  const [password, setPassword] = useState('123456');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -66,6 +66,11 @@ export default function Login() {
         </div>
 
         <div className="bg-white border border-border rounded-2xl p-8 shadow-sm">
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-100 text-primary text-xs rounded-lg">
+            <p className="font-semibold mb-0.5">Demo Admin Pre-filled</p>
+            <p className="text-primary/80">Click <strong>Sign In</strong> to explore the Admin Command Center.</p>
+          </div>
+
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-100 text-danger text-sm rounded-lg flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
