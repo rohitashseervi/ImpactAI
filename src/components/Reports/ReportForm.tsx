@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
 import { createCommunity, createReport, findCommunityByNameAndPin } from '../../lib/firestore';
 import { calculateUrgencyScore } from '../../lib/gemini';
 import { NeedCategory, FieldReport } from '../../types';
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Sparkles, ArrowRight, Plus } from 'lucide-react';
 import { updateDoc, doc } from 'firebase/firestore';
 import { firestore } from '../../config/firebase';
+
+interface SubmittedReportInfo {
+  communityName: string;
+  needCategory: NeedCategory;
+  manualUrgency: number;
+  aiUrgency: number | null;
+  peopleAffected: number;
+}
 
 const CATEGORIES: NeedCategory[] = ['Medical', 'Water', 'Food', 'Shelter', 'Sanitation', 'Education'];
 
@@ -17,9 +27,10 @@ interface Props {
 
 export default function ReportForm({ ngoName, prefillData, onSuccess }: Props) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [submittedInfo, setSubmittedInfo] = useState<SubmittedReportInfo | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,27 +85,41 @@ export default function ReportForm({ ngoName, prefillData, onSuccess }: Props) {
 
       const reportId = await createReport(reportData);
 
+      // Show modal immediately with manual urgency; AI score populates when ready
+      setSubmittedInfo({
+        communityName,
+        needCategory: reportData.needCategory,
+        manualUrgency,
+        aiUrgency: null,
+        peopleAffected: reportData.peopleAffected,
+      });
+
       // AI urgency scoring in background
       calculateUrgencyScore(description).then(async (aiResult) => {
         try {
           await updateDoc(doc(firestore, 'reports', reportId), {
             urgencyScore: aiResult.score,
           });
+          setSubmittedInfo((prev) => prev ? { ...prev, aiUrgency: aiResult.score } : prev);
         } catch (err) {
           console.error('Failed to update AI urgency:', err);
         }
       });
 
-      setSuccess(true);
       (e.target as HTMLFormElement).reset();
       onSuccess?.();
-      setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
       setError(err.message || 'Failed to submit report');
     } finally {
       setSubmitting(false);
     }
   };
+
+  const displayedUrgency = submittedInfo?.aiUrgency ?? submittedInfo?.manualUrgency ?? 0;
+  const urgencyColor =
+    displayedUrgency >= 8 ? 'text-danger' : displayedUrgency >= 5 ? 'text-warning' : 'text-success';
+  const urgencyLabel =
+    displayedUrgency >= 8 ? 'Critical' : displayedUrgency >= 5 ? 'Moderate' : 'Low';
 
   return (
     <div className="bg-white rounded-2xl border border-border p-8 shadow-sm">
@@ -107,11 +132,85 @@ export default function ReportForm({ ngoName, prefillData, onSuccess }: Props) {
         </div>
       )}
 
-      {success && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-100 text-success text-sm rounded-lg flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4" /> Report submitted successfully! AI is analyzing urgency in the background.
-        </div>
-      )}
+      <AnimatePresence>
+        {submittedInfo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4"
+            onClick={() => setSubmittedInfo(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', duration: 0.5 }}
+              className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
+                className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <CheckCircle2 className="w-12 h-12 text-success" strokeWidth={2.5} />
+              </motion.div>
+
+              <h3 className="text-2xl font-bold text-center mb-1">Report Submitted!</h3>
+              <p className="text-sm text-slate text-center mb-6">
+                Thank you for speaking up for the community.
+              </p>
+
+              <div className="space-y-3 bg-slate-50 rounded-2xl p-4 mb-5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold uppercase text-slate">Community</span>
+                  <span className="text-sm font-semibold">{submittedInfo.communityName}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold uppercase text-slate">Category</span>
+                  <span className="text-sm font-semibold">{submittedInfo.needCategory}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold uppercase text-slate">People Affected</span>
+                  <span className="text-sm font-semibold">{submittedInfo.peopleAffected.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center pt-3 border-t border-border">
+                  <span className="text-xs font-bold uppercase text-slate flex items-center gap-1.5">
+                    <Sparkles className="w-3 h-3 text-primary" /> AI Urgency
+                  </span>
+                  {submittedInfo.aiUrgency === null ? (
+                    <span className="text-xs text-slate flex items-center gap-1.5">
+                      <span className="w-3 h-3 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                      Gemini analyzing…
+                    </span>
+                  ) : (
+                    <span className={`text-lg font-bold ${urgencyColor}`}>
+                      {displayedUrgency}/10 · {urgencyLabel}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => setSubmittedInfo(null)}
+                  className="py-3 border border-border rounded-xl font-semibold text-sm hover:bg-slate-50 flex items-center justify-center gap-1.5"
+                >
+                  <Plus className="w-4 h-4" /> Submit Another
+                </button>
+                <button
+                  onClick={() => { setSubmittedInfo(null); navigate('/ngo/reports'); }}
+                  className="py-3 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-blue-700 flex items-center justify-center gap-1.5"
+                >
+                  View My Reports <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Community Info */}

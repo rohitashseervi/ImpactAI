@@ -100,7 +100,6 @@ function NGOOverview() {
 function SubmitReport() {
   const { user } = useAuth();
   const [ngoName, setNgoName] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -113,7 +112,7 @@ function SubmitReport() {
   return (
     <>
       <Header title="Submit Field Report" subtitle="Report community needs from your field survey" />
-      <ReportForm ngoName={ngoName} onSuccess={() => navigate('/ngo')} />
+      <ReportForm ngoName={ngoName} />
     </>
   );
 }
@@ -122,7 +121,6 @@ function ScanReport() {
   const { user } = useAuth();
   const [ngoName, setNgoName] = useState('');
   const [prefillData, setPrefillData] = useState<ExtractedReportData | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -136,7 +134,7 @@ function ScanReport() {
     return (
       <>
         <Header title="Review Extracted Data" subtitle="Review and correct the AI-extracted data before submitting" />
-        <ReportForm ngoName={ngoName} prefillData={prefillData} onSuccess={() => navigate('/ngo')} />
+        <ReportForm ngoName={ngoName} prefillData={prefillData} />
       </>
     );
   }

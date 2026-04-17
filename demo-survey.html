@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Demo Field Survey — Screenshot Me</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at center, #d6d1c4 0%, #a8a396 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      font-family: 'Kalam', cursive;
+    }
+
+    .hint {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a73e8;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+
+    .paper {
+      width: 680px;
+      min-height: 900px;
+      background:
+        repeating-linear-gradient(
+          transparent 0px,
+          transparent 37px,
+          #b8c9d9 38px
+        ),
+        linear-gradient(to right, #fafaf4, #f5f3ea);
+      padding: 60px 50px 60px 80px;
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.35),
+        0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 2px;
+      transform: rotate(-0.6deg);
+      position: relative;
+      color: #1a3a7a;
+    }
+
+    .paper::before {
+      content: '';
+      position: absolute;
+      left: 55px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #e8857d;
+      opacity: 0.55;
+    }
+
+    /* punch holes on left */
+    .paper::after {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 80px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.12);
+      box-shadow:
+        0 300px 0 rgba(0,0,0,0.12),
+        0 600px 0 rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      font-size: 34px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 6px;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 28px;
+      opacity: 0.8;
+    }
+
+    .line {
+      font-size: 22px;
+      line-height: 38px;
+      margin-bottom: 4px;
+    }
+
+    .label {
+      font-weight: 700;
+    }
+
+    .section-gap {
+      height: 14px;
+    }
+
+    .desc {
+      font-size: 22px;
+      line-height: 38px;
+      margin-top: 6px;
+    }
+
+    .signature {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 20px;
+    }
+
+    .sig-box {
+      border-bottom: 1.5px solid #1a3a7a;
+      min-width: 200px;
+      padding-bottom: 2px;
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    /* ink variation tweaks */
+    .ink-dark { color: #132a5c; }
+    .ink-blue { color: #1a3a7a; }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .paper { box-shadow: none; transform: none; }
+      .hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hint">Press Win + Shift + S, then drag a box over the paper to capture</div>
+
+  <div class="paper">
+    <h1>FIELD SURVEY REPORT</h1>
+    <div class="subtitle">— ImpactAI Relief Network —</div>
+
+    <div class="line"><span class="label">Community:</span> Rampur Village</div>
+    <div class="line"><span class="label">District:</span> Lucknow, Uttar Pradesh</div>
+    <div class="line"><span class="label">Pin Code:</span> 226001</div>
+    <div class="line"><span class="label">Date of Survey:</span> 17 - 04 - 2026</div>
+    <div class="line"><span class="label">Field Worker:</span> Anita Sharma</div>
+
+    <div class="section-gap"></div>
+
+    <div class="line ink-dark"><span class="label">Need Category:</span> Water</div>
+    <div class="line ink-dark"><span class="label">People Affected:</span> 1500</div>
+    <div class="line ink-dark"><span class="label">Current Resources:</span> One tanker weekly</div>
+
+    <div class="section-gap"></div>
+
+    <div class="line label">Description:</div>
+    <div class="desc">
+      Village handpump has been broken for the last 2 weeks.
+      300+ families are walking 3 km to a distant well.
+      Well water is contaminated — children are falling sick.
+      Urgent repair needed!
+    </div>
+
+    <div class="signature">
+      <div>
+        <div style="font-size:16px; opacity:0.7;">Field Worker Signature</div>
+        <div class="sig-box">A. Sharma</div>
+      </div>
+      <div>
+        <div style="font-size:16px; opacity:0.7;">Date</div>
+        <div class="sig-box">17/04/26</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
